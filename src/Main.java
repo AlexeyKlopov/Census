@@ -25,33 +25,21 @@ public class Main {
         System.out.println();
 
         System.out.println("Мужчины призывного возраста: ");
-        persons.stream()
+        List<String> solders = persons.stream()
                 .filter(person -> person.getSex() == Sex.MAN)
-                .filter(person -> person.getAge() > 18 && person.getAge() < 27)
+                .filter(person -> person.getAge() > 17 && person.getAge() < 27)
                 .map(Person::getFamily)
-                //.collect(Collectors.toList())//без этой операции список тоже формируется. Idea подсвечивает операцию
-                // серым. Что нам дает ее использование здесь? (применение указано в описании к ДЗ)
-                .forEach(System.out::println);
-        System.out.println();
+                .collect(Collectors.toList());
+        System.out.println(solders);
 
-        System.out.println("Работоспособные мужчины с высшим образованием: ");
-        persons.stream()
-                .filter(person -> person.getSex() == Sex.MAN)
-                .filter(person -> person.getAge() > 18 && person.getAge() < 65)
+        System.out.println("Работоспособные мужчины и женщины с высшим образованием: ");
+        List<String> workers = persons.stream()
                 .filter(person -> person.getEducation() == Education.HIGHER)
+                .filter(person -> person.getSex() == Sex.MAN ? person.getAge() > 17 && person.getAge() < 65
+                        : person.getAge() > 17 && person.getAge() < 60)
                 .sorted(Comparator.comparing(Person::getFamily))
                 .map(Person::getFamily)
-                .collect(Collectors.toList())
-                .forEach(System.out::println);
-        System.out.println();
-        System.out.println("Работоспособные женщины с высшим образованием: ");
-        persons.stream()
-                .filter(person -> person.getSex() == Sex.WOMAN)
-                .filter(person -> person.getAge() > 18 && person.getAge() < 60)
-                .filter(person -> person.getEducation() == Education.HIGHER)
-                .sorted(Comparator.comparing(Person::getFamily))
-                .map(Person::getFamily)
-                .collect(Collectors.toList())
-                .forEach(System.out::println);
+                .collect(Collectors.toList());
+        System.out.println(workers);
     }
 }
